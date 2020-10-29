@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Beep", "Beep\Beep.csproj", "{F2A24D5B-93DF-4412-BD6F-B78B54783ACD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GhostBusters", "GhostBusters\GhostBusters.csproj", "{E6DAB9CF-E8A7-4B00-A2C6-81D75FF690E8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -8,9 +8,9 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{F2A24D5B-93DF-4412-BD6F-B78B54783ACD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F2A24D5B-93DF-4412-BD6F-B78B54783ACD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F2A24D5B-93DF-4412-BD6F-B78B54783ACD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F2A24D5B-93DF-4412-BD6F-B78B54783ACD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E6DAB9CF-E8A7-4B00-A2C6-81D75FF690E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E6DAB9CF-E8A7-4B00-A2C6-81D75FF690E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E6DAB9CF-E8A7-4B00-A2C6-81D75FF690E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E6DAB9CF-E8A7-4B00-A2C6-81D75FF690E8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

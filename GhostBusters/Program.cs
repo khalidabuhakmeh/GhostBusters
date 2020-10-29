@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using GhostBusters;
 
@@ -17,3 +18,22 @@ await Task.WhenAll(
     Audio.Play("lazer.wav", new PlaybackOptions { Rate = 0.8, Quality = 1 }),
     Audio.Play("lazer.wav", new PlaybackOptions { Rate = 0.6, Quality = 1 })
 );
+
+var cancellation = new CancellationTokenSource();
+
+var keyBoardTask = Task.Run(() =>
+{
+    Console.WriteLine("Press enter to cancel the birthday song...");
+    Console.ReadKey();
+
+    // Cancel the task
+    cancellation.Cancel();
+});
+
+var happyBirthday = Audio.Play("happy-birthday.wav", new PlaybackOptions(), cancellation.Token);
+
+await Task.WhenAny(keyBoardTask, happyBirthday);
+
+if (cancellation.IsCancellationRequested) {
+    Console.WriteLine("🥳 Someone's a party pooper...");
+}

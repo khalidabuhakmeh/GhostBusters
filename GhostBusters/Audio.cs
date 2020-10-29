@@ -2,7 +2,9 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading;
+using CliWrap;
 
 namespace GhostBusters
 {
@@ -25,8 +27,31 @@ namespace GhostBusters
             );
 
             return new PlaybackResult(audio);
-
         }
+
+        public static async Task<PlaybackResult> Play(
+            string filename,
+            PlaybackOptions options,
+            CancellationToken token
+        )
+        {
+            options??= new PlaybackOptions();
+            var arguments = options.GetArguments();
+            // add filename
+            arguments.Add(filename);
+
+            var sb = new StringBuilder();
+            var command =
+                await Cli
+                    .Wrap("afplay")
+                    .WithArguments(string.Join(" ", arguments))
+                    .WithStandardOutputPipe(PipeTarget.ToStringBuilder(sb))
+                    .ExecuteAsync(token);
+
+            var output = sb.ToString();
+            return new PlaybackResult(output);
+        }
+        
     }
     
     public record PlaybackResult 
