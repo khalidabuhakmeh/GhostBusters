@@ -21,8 +21,7 @@ await Task.WhenAll(
 
 var cancellation = new CancellationTokenSource();
 
-var keyBoardTask = Task.Run(() =>
-{
+var keyBoardTask = Task.Run(() => {
     Console.WriteLine("Press enter to cancel the birthday song...");
     Console.ReadKey();
 
@@ -30,7 +29,11 @@ var keyBoardTask = Task.Run(() =>
     cancellation.Cancel();
 });
 
-var happyBirthday = Audio.Play("happy-birthday.wav", new PlaybackOptions(), cancellation.Token);
+var happyBirthday = Audio.Play(
+    "happy-birthday.wav", 
+    new PlaybackOptions(), 
+    cancellation.Token
+);
 
 await Task.WhenAny(keyBoardTask, happyBirthday);
 
