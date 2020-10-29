@@ -11,28 +11,9 @@ namespace GhostBusters
     public static class Audio
     {
         public static async Task<PlaybackResult> Play(
-            string filename, 
-            PlaybackOptions options = null 
-        )
-        {
-            options??= new PlaybackOptions();
-            var arguments = options.GetArguments();
-            // add filename
-            arguments.Add(filename);
-            
-            var audio = await SimpleExec.Command.ReadAsync(
-                "afplay",
-                string.Join(" ", arguments),
-                noEcho: true
-            );
-
-            return new PlaybackResult(audio);
-        }
-
-        public static async Task<PlaybackResult> Play(
             string filename,
-            PlaybackOptions options,
-            CancellationToken token
+            PlaybackOptions options = null,
+            CancellationToken token = default
         )
         {
             options??= new PlaybackOptions();
