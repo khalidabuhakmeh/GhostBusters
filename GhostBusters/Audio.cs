@@ -1,10 +1,10 @@
 using System.Threading.Tasks;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using CliWrap;
+using CliWrap.Builders;
 
 namespace GhostBusters
 {
@@ -16,26 +16,22 @@ namespace GhostBusters
             CancellationToken token = default
         )
         {
-            options??= new PlaybackOptions();
-            var arguments = options.GetArguments();
-            // add filename
-            arguments.Add(filename);
+            options ??= new PlaybackOptions();
 
             var sb = new StringBuilder();
-            var command =
-                await Cli
-                    .Wrap("afplay")
-                    .WithArguments(string.Join(" ", arguments))
-                    .WithStandardOutputPipe(PipeTarget.ToStringBuilder(sb))
-                    .ExecuteAsync(token);
+
+            await Cli
+                .Wrap("afplay")
+                .WithArguments(args => options.ApplyArguments(args).Add(filename))
+                .WithStandardOutputPipe(PipeTarget.ToStringBuilder(sb))
+                .ExecuteAsync(token);
 
             var output = sb.ToString();
             return new PlaybackResult(output);
         }
-        
     }
-    
-    public record PlaybackResult 
+
+    public record PlaybackResult
     {
         public PlaybackResult(string result)
         {
@@ -44,7 +40,7 @@ namespace GhostBusters
 
             var reader = new StringReader(result);
             Filename = reader.ReadLine()?.Split(':')[1].Trim();
-            
+
             var line = reader.ReadLine();
             Format = line?.Substring(line.LastIndexOf(':') + 1).Trim();
 
@@ -56,7 +52,7 @@ namespace GhostBusters
                 NumberOfPacketsToRead = int.Parse(sizes[1].Split(':').LastOrDefault() ?? "0");
             }
         }
-        
+
         public string Filename { get; }
         public string Format { get; }
         public int BufferByteSize { get; }
@@ -81,30 +77,30 @@ namespace GhostBusters
         ///  practical limits are about 0.4 (slower) to 3.0 (faster).
         /// </summary>
         public double? Rate { get; init; }
-        
+
         /// <summary>
         /// Set the quality used for rate-scaled playback (default is 0 - low quality, 1 - high quality).
         /// </summary>
         public double? Quality { get; init; }
 
-        internal List<string> GetArguments()
+        internal ArgumentsBuilder ApplyArguments(ArgumentsBuilder args)
         {
-            var arguments = new List<string> { "-d" };
+            args.Add("-d");
 
             if (Volume.HasValue) {
-                arguments.Add($"-v {Volume}");
+                args.Add("-v").Add(Volume);
             }
-            if (Time.HasValue)  {
-                arguments.Add($"-t {Time}");
+            if (Time.HasValue) {
+                args.Add("-t").Add(Time);
             }
-            if (Rate.HasValue)  {
-                arguments.Add($"-r {Rate}");
+            if (Rate.HasValue) {
+                args.Add("-r").Add(Rate);
             }
-            if (Quality.HasValue)  {
-                arguments.Add($"-q {Quality}");
+            if (Quality.HasValue) {
+                args.Add("-q").Add(Quality);
             }
 
-            return arguments;
+            return args;
         }
     }
 }
